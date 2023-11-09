@@ -5,30 +5,37 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import ar.edu.unlam.Dominio.Cliente;
+import ar.edu.unlam.Dominio.Producto;
+import ar.edu.unlam.Dominio.Tienda;
+import ar.edu.unlam.Exception.ClienteInexistenteException;
+import ar.edu.unlam.Exception.VendedorInexistenteException;
+import ar.edu.unlam.Exception.VendibleInexistenteException;
+
 public class testTienda {
 	
-	@Test
-	public void queSePuedaAgregarProductos() throws VendibleInexistenteException {
+	@Test(expected=VendibleInexistenteException.class)
+	public void queSePuedaAgregarProductos() throws VendibleInexistenteException  {
 		Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
 		Producto producto = new Producto("1", "Producto nuevo", 100d);
 		tienda.agregarProducto(producto);
-		Vendible productoActual = (Producto) tienda.getVendible(producto.getCodigo());
+		Producto productoActual = (Producto) tienda.getVendible(producto.getCodigo());
 		assertEquals(producto, productoActual);
 	}
 	
-	@Test
+	@Test(expected=VendibleInexistenteException.class)
 	public void queSePuedaAgregarStock() throws VendibleInexistenteException {
 		Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
 		Producto producto = new Producto("1", "Producto nuevo", 100d);
 		Integer cantidad = 10;
 		tienda.agregarProducto(producto, cantidad);
-		Integer stockActual = tienda.getStock((Producto) producto); 
+		Integer stockActual = producto.getStock();			 
 		assertEquals(cantidad, stockActual);
 		
 		
 	}
 	
-	@Test
+	@Test (expected= ClienteInexistenteException.class)
 	public void queSePuedaAgregarUnCliente() throws ClienteInexistenteException {
 		Tienda tienda = new Tienda("30123456780", "Tienda de ejemplo");
 		String cuitEjemplo = "30123456780";
